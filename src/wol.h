@@ -1,16 +1,3 @@
-/*
-*
-* @author     Timo Furrer
-* @co-author  Mogria
-*
-* @version    0.01.07
-* @copyright  GNU General Public License
-*
-* @reopsitory https://github.com/timofurrer/WOL
-*
-*/
-
-/* Some needed constants */
 #define PACKET_BUF         17*6
 
 #define MAC_ADDR_MAX       6
@@ -53,30 +40,6 @@ typedef struct
 
 void wol_pc();
 
-/**
-* @brief Sends the WOL magic packet to the given mac address
-*
-* @param wol_header WOL header packet
-* @param sock       The socket to send the magic packet
-*
-* @return integer
-*/
 int send_WOL( const wol_header_t *wol_header );
 
-/**
- * @brief Creates the UDP socket to send the WOL magic packet
- *
- * @return integer
- */
-// int startupSocket( );
-
-
-/**
-* @brief Converts a mac address string to a mac address struct of type mac_addr_t
-*
-* @param mac       The mac address to convert
-* @param packedMac The mac address struct of type mac_addr_t
-*
-* @return integer
-*/
 int packMacAddr( const char *mac, mac_addr_t *packedMac );

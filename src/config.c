@@ -183,7 +183,6 @@ void getIpPublic(char* url[]){
 
 	psvDebugScreenPrintf(" - IP Public : %s\n",vita_ip_public);
 
-	// ip.src==192.168.1.28 && ip.dst==192.168.1.28
 
 
 
