@@ -26,17 +26,11 @@ void wol_pc() {
 
   psvDebugScreenPrintf( "Enter into WOL. \n\n");
 
+  char mac_addr_str[MAC_ADDR_STR_MAX];
+
   // mac_addr_t *( *funcp )( char **args, int length ) = nextAddrFromArg;
   wol_header_t *currentWOLHeader = (wol_header_t *) malloc( sizeof( wol_header_t ));
 
-
-  // On copie l'adresse si on ne possède pas d'adresse IP
-  // strncpy( currentWOLHeader->remote_addr, REMOTE_ADDR, ADDR_LEN );
-
-  // if(( sock = startupSocket( )) < 0 )
-  // {
-  //   exit( EXIT_FAILURE ); // Log is done in startupSocket( )
-  // }
 
   // On déclare l'adresse
   mac_addr_t *myaddressMAC = (mac_addr_t *) malloc( sizeof( mac_addr_t ));
@@ -47,7 +41,7 @@ void wol_pc() {
   // ON lui attribut l'adresse MAC
   currentWOLHeader->mac_addr = myaddressMAC;
 
-  psvDebugScreenPrintf( "Try to sent WOL magic packet to %s ...!\n\n", currentWOLHeader->mac_addr->mac_addr_str );
+  psvDebugScreenPrintf( "Try to sent WOL magic packet to %s ...!\n\n", MAC_ADDR_SET );
 
   send_WOL( currentWOLHeader);
 
@@ -58,22 +52,12 @@ void wol_pc() {
 
 
 
-
-
-
-
 int packMacAddr( const char *mac, mac_addr_t *packedMac )
 {
   char *tmpMac    = (char *) malloc( strlen( mac ) * sizeof( char ));
   char *delimiter = (char *) ":";
   char *tok;
   int i;
-
-  if( tmpMac == NULL )
-  {
-    psvDebugScreenPrintf( stderr, "Cannot allocate memory for mac address: %s ...!\n", strerror( errno ));
-    return -1;
-  }
 
   strncpy( tmpMac, mac, strlen( mac ));
   tok = strtok( tmpMac, delimiter );
@@ -89,18 +73,16 @@ int packMacAddr( const char *mac, mac_addr_t *packedMac )
     tok = strtok( NULL, delimiter );
   }
 
-  strncpy( packedMac->mac_addr_str, mac, MAC_ADDR_STR_MAX );
+  // strncpy( packedMac->mac_addr_str, mac, MAC_ADDR_STR_MAX );
   return 0;
 }
 
 
 
 
-
-
-
 int send_WOL( const wol_header_t *wol_header)
 {
+
 
   int32_t retval; /* return value */
   int32_t sfd; /* Socket file descriptor */
@@ -131,7 +113,7 @@ int send_WOL( const wol_header_t *wol_header)
   if (sfd < 0)
     psvDebugScreenPrintf("SOCKET ERROR");
   else
-    psvDebugScreenPrintf("Raw socket created.\n");
+    psvDebugScreenPrintf("Raw socket created.\n\n");
 
 
   /* On autorise le sokcet a envoyer les datagrammes à l'adreese de diffusion */
@@ -139,7 +121,7 @@ int send_WOL( const wol_header_t *wol_header)
   if (retval == -1)
     psvDebugScreenPrintf("NOT ALLOW TO BROADCAST");
   else
-    psvDebugScreenPrintf("Allow socket to broadcast.\n");
+    psvDebugScreenPrintf("Allow socket to broadcast.\n\n");
 
 
 
@@ -149,8 +131,6 @@ int send_WOL( const wol_header_t *wol_header)
   // Type de protocol
   serv_addr.sin_family = SCE_NET_AF_INET;
 
-  // Port de destination
-  // serv_addr.sin_port = sceNetHtons(REMOTE_PORT);
   serv_addr.sin_addr = dst_addr; /* set destination address */
   memset(&serv_addr.sin_zero, 0, sizeof(serv_addr.sin_zero)); /* fill sin_zero with zeroes */
 
@@ -169,15 +149,21 @@ int send_WOL( const wol_header_t *wol_header)
     }
   }
 
+  psvDebugScreenPrintf("Packet send : ");
+  for (int i = 0; i < sizeof( packet ); i++) {
+    psvDebugScreenPrintf("%x", packet[i]);
+  }
+  psvDebugScreenPrintf("\n\n");
+
   
 
   // On envoie le packet
-  //sent_data = 0;
-  sent_data = sceNetSendto(sfd, packet, sizeof( packet ), 0, (SceNetSockaddr*)&serv_addr, sizeof(SceNetSockaddr));
+  sent_data = 0;
+  //sent_data = sceNetSendto(sfd, packet, sizeof( packet ), 0, (SceNetSockaddr*)&serv_addr, sizeof(SceNetSockaddr));
   if (sent_data < 1){
       psvDebugScreenPrintf( "Cannot send data: %s ...!\n", strerror( errno ));
   }else{
-      psvDebugScreenPrintf( "Successful sent WOL magic packet to %s ...!\n", wol_header->mac_addr->mac_addr_str );
+      psvDebugScreenPrintf( "Successful sent WOL magic packet to %s ...!\n", MAC_ADDR_SET );
   }
 
 

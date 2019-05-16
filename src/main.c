@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 
 	printWifiInformation();
 
-	//getIpPublic(url);
+	getIpPublic(url);
 
 	wol_pc();
 

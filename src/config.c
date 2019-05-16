@@ -102,27 +102,27 @@ void printWifiInformation() {
 	char ssid[SCE_NETCTL_INFO_SSID_LEN_MAX + 1];
 	// stock l'adresse mac
 	static char macAddress[0x12]; 
-	psvDebugScreenPrintf("\nConfiguration reseau : \n\n");
+	psvDebugScreenPrintf("\nConfiguration reseau : \n\n\n");
 
 	netInit();
 
 	sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_ETHER_ADDR, &info);
 	sceNetGetMacAddress(&mac, 0);
-	psvDebugScreenPrintf(" - Adresse MAC : %02X:%02X:%02X:%02X:%02X:%02X\n", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
+	psvDebugScreenPrintf(" - Adresse MAC : %02X:%02X:%02X:%02X:%02X:%02X\n\n", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
 	/* Get IP address */
 	sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info);
 	// On stock l'IP de la PS vita dans vita_ip
 	strcpy(vita_ip, info.ip_address);
-	psvDebugScreenPrintf(" - IP console : %s\n", vita_ip);
+	psvDebugScreenPrintf(" - IP console : %s\n\n", vita_ip);
 	/* GET MASK */
 	sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_NETMASK, &info);
-	psvDebugScreenPrintf(" - Masque : / %s\n", info.netmask);
+	psvDebugScreenPrintf(" - Masque : / %s\n\n", info.netmask);
 	/* Route par défaut */
 	sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_DEFAULT_ROUTE, &info);
-	psvDebugScreenPrintf(" - Route par default : %s\n", info.default_route);
+	psvDebugScreenPrintf(" - Route par default : %s\n\n", info.default_route);
 	/* SSID */
 	sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_SSID, &info);
-	psvDebugScreenPrintf(" - SSID : %s\n", info.ssid);
+	psvDebugScreenPrintf(" - SSID : %s\n\n", info.ssid);
 }
 
 
@@ -155,37 +155,71 @@ void getIpPublic(char* url[]){
 		if (c>>6==3) // if fetched char is a UTF8 
 			c = readUTF(c,fd); // convert it back to ASCII
 
+			if (c == '\n') { // end of line reached
 
-		if (c == '\n') { // end of line reached
 
+				if(start_ip){
 
-			if(start_ip){
+					for( int i = 0; i < pos; i = i + 1 ){
+				      vita_ip_public[i] = line[i];
+				   }
+				   // caractère de fin de ligne
+				   vita_ip_public[pos] = '\0';
+				   // on positionne le compteur à la fin
+				   pos = sizeof(line);
+				   close(fd);
+					//psvDebugScreenPrintf("%.*s\n", pos, line); // printf the received line into the screen
+				}
 
-				for( int i = 0; i < pos; i = i + 1 ){
-			      vita_ip_public[i] = line[i];
-			   }
-			   vita_ip_public[pos] = '\0';
-				//psvDebugScreenPrintf("%.*s\n", pos, line); // printf the received line into the screen
+				// si la ligne fait 1 alors la ligne suivante est l'ip
+				if(pos == 1)
+					start_ip = 1;
+
+				pos = 0; // reset the buffer pointer back to 0
+			} else {
+
+				line[pos] = c;
+				pos++;
 			}
-
-			// si la ligne fait 1 alors la ligne suivante est l'ip
-			if(pos == 1)
-				start_ip = 1;
-
-			pos = 0; // reset the buffer pointer back to 0
-		} else {
-
-			line[pos] = c;
-			pos++;
-		}
 	}
-	close(fd);
+	// close(fd);
 
 	psvDebugScreenPrintf(" - IP Public : %s\n",vita_ip_public);
 
+	// ip.src==192.168.1.28 && ip.dst==192.168.1.28
 
 
 
 }
 
 
+
+
+
+
+
+
+// On lit le fichier de conf
+void open_file(char *file_name){
+	char ch;	
+	FILE *fp;
+
+	fp = fopen(file_name, "r"); // read mode
+	if (fp == NULL) {
+		perror("Error while opening the file.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	psvDebugScreenPrintf("The contents of %s file are:\n", file_name);
+	while((ch = fgetc(fp)) != EOF){
+		psvDebugScreenPrintf("%c", ch);
+		// On affiche la première ligne
+		if (ch == '\n') {
+			// On attend avant d'afficher les caractères
+			sceKernelDelayThread(100000);
+            break;
+        }
+	}
+
+	fclose(fp);
+}
