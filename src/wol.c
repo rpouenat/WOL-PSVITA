@@ -26,24 +26,18 @@ void wol_pc() {
 
   psvDebugScreenPrintf( "Enter into WOL. \n\n");
 
-  char mac_addr_str[MAC_ADDR_STR_MAX];
+  // Tableau contenant l'adresse
+  char mac_addr[MAC_ADDR_STR_MAX];
 
-  // mac_addr_t *( *funcp )( char **args, int length ) = nextAddrFromArg;
-  wol_header_t *currentWOLHeader = (wol_header_t *) malloc( sizeof( wol_header_t ));
-
-
-  // On déclare l'adresse
-  mac_addr_t *myaddressMAC = (mac_addr_t *) malloc( sizeof( mac_addr_t ));
-
-  // On copie la valeur de l'adresse
-  packMacAddr( MAC_ADDR_SET, myaddressMAC );
+  // Convertit l'adresse mac
+  packMacAddr( MAC_ADDR_SET, mac_addr );
 
   // ON lui attribut l'adresse MAC
   currentWOLHeader->mac_addr = myaddressMAC;
 
   psvDebugScreenPrintf( "Try to sent WOL magic packet to %s ...!\n\n", MAC_ADDR_SET );
 
-  send_WOL( currentWOLHeader);
+  send_WOL( mac_addr);
 
   free( currentWOLHeader->mac_addr );
 
@@ -52,7 +46,7 @@ void wol_pc() {
 
 
 
-int packMacAddr( const char *mac, mac_addr_t *packedMac )
+int packMacAddr( const char *mac, char *mac_addr )
 {
   char *tmpMac    = (char *) malloc( strlen( mac ) * sizeof( char ));
   char *delimiter = (char *) ":";
@@ -69,7 +63,7 @@ int packMacAddr( const char *mac, mac_addr_t *packedMac )
       return -1;
     }
 
-    packedMac->mac_addr[i] = (unsigned char) strtol( tok, NULL, CONVERT_BASE );
+    mac_addr[i] = (unsigned char) strtol( tok, NULL, CONVERT_BASE );
     tok = strtok( NULL, delimiter );
   }
 
@@ -80,7 +74,7 @@ int packMacAddr( const char *mac, mac_addr_t *packedMac )
 
 
 
-int send_WOL( const wol_header_t *wol_header)
+int send_WOL( char *mac_addr)
 {
 
 
@@ -145,7 +139,7 @@ int send_WOL( const wol_header_t *wol_header)
   {
     for( j = 0; j < 6; j++ )
     {
-      packet[i * 6 + j] = wol_header->mac_addr->mac_addr[j];
+      packet[i * 6 + j] = mac_addr[j];
     }
   }
 
@@ -158,8 +152,8 @@ int send_WOL( const wol_header_t *wol_header)
   
 
   // On envoie le packet
-  sent_data = 0;
-  //sent_data = sceNetSendto(sfd, packet, sizeof( packet ), 0, (SceNetSockaddr*)&serv_addr, sizeof(SceNetSockaddr));
+  // sent_data = 0;
+  sent_data = sceNetSendto(sfd, packet, sizeof( packet ), 0, (SceNetSockaddr*)&serv_addr, sizeof(SceNetSockaddr));
   if (sent_data < 1){
       psvDebugScreenPrintf( "Cannot send data: %s ...!\n", strerror( errno ));
   }else{
