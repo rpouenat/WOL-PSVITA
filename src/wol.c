@@ -29,7 +29,7 @@ void wol_pc() {
   char mac_addr[MAC_ADDR_STR_MAX];
 
   // Convertit l'adresse mac
-  packMacAddr( MAC_ADDR_SET, mac_addr );
+  convert( MAC_ADDR_SET, mac_addr );
 
   psvDebugScreenPrintf( "Try to sent WOL magic packet to %s ...!\n\n", MAC_ADDR_SET );
 
@@ -40,7 +40,9 @@ void wol_pc() {
 
 
 
-int packMacAddr( const char *mac, char *mac_addr )
+
+//  AA:BB:CC:DD:EE:FF -> aabbccddeeff
+void convert( const char *mac, char *mac_addr )
 {
   char *tmpMac    = (char *) malloc( strlen( mac ) * sizeof( char ));
   char *delimiter = (char *) ":";
@@ -52,17 +54,10 @@ int packMacAddr( const char *mac, char *mac_addr )
 
   for( i = 0; i < MAC_ADDR_MAX; i++ )
   {
-    if( tok == NULL )
-    {
-      return -1;
-    }
 
     mac_addr[i] = (unsigned char) strtol( tok, NULL, CONVERT_BASE );
     tok = strtok( NULL, delimiter );
   }
-
-  // strncpy( packedMac->mac_addr_str, mac, MAC_ADDR_STR_MAX );
-  return 0;
 }
 
 

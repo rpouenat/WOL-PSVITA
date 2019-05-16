@@ -24,4 +24,4 @@ void wol_pc();
 int send_WOL( char *mac_addr);
 
 
-int packMacAddr( const char *mac, char *mac_addr );
+void convert( const char *mac, char *mac_addr );
