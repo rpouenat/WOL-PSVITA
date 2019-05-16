@@ -1,4 +1,4 @@
-# WOL-PSVITA
+# WOL-PSVITA PC
 
 Compile application with :
 
