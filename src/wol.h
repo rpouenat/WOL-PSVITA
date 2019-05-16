@@ -8,9 +8,9 @@
 #define ADDR_LEN           16
 #define REMOTE_ADDR        "255.255.255.255"
 
-#define MAC_ADDR_SET	   "XX:XX:XX:XX:XX:XX"
+#define MAC_ADDR_SET	   "14:DD:A9:27:95:B9"
 
-#define REMOTE_IP		   "192.168.1.X"
+#define REMOTE_IP		   "192.168.1.46"
 
 
 #define ARGS_BUF_MAX       128

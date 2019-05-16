@@ -26,27 +26,21 @@ void wol_pc() {
 
   psvDebugScreenPrintf( "Enter into WOL. \n\n");
 
-  // Tableau contenant l'adresse
   char mac_addr[MAC_ADDR_STR_MAX];
 
   // Convertit l'adresse mac
-  convert( MAC_ADDR_SET, mac_addr );
-
-  // ON lui attribut l'adresse MAC
-  currentWOLHeader->mac_addr = myaddressMAC;
+  packMacAddr( MAC_ADDR_SET, mac_addr );
 
   psvDebugScreenPrintf( "Try to sent WOL magic packet to %s ...!\n\n", MAC_ADDR_SET );
 
   send_WOL( mac_addr);
 
-  free( currentWOLHeader->mac_addr );
-
 }
 
 
 
-// AA:BB:CC:DD:EE:FF -> aabbccddeeff
-int convert( const char *mac, char *mac_addr )
+
+int packMacAddr( const char *mac, char *mac_addr )
 {
   char *tmpMac    = (char *) malloc( strlen( mac ) * sizeof( char ));
   char *delimiter = (char *) ":";

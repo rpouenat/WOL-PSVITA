@@ -40,6 +40,9 @@ int main(int argc, char *argv[]) {
 	// création du répertoire
 	//sceIoMkdir("ux0:/data/vpn", 0777);
 
+
+	open_file("ux0:/data/vpn/config.ovpn");
+
 	//sceNetShowIfconfig((void*) p,0);
 
 
