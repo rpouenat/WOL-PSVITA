@@ -30,7 +30,7 @@ void wol_pc() {
   char mac_addr[MAC_ADDR_STR_MAX];
 
   // Convertit l'adresse mac
-  packMacAddr( MAC_ADDR_SET, mac_addr );
+  convert( MAC_ADDR_SET, mac_addr );
 
   // ON lui attribut l'adresse MAC
   currentWOLHeader->mac_addr = myaddressMAC;
@@ -45,8 +45,8 @@ void wol_pc() {
 
 
 
-
-int packMacAddr( const char *mac, char *mac_addr )
+// AA:BB:CC:DD:EE:FF -> aabbccddeeff
+int convert( const char *mac, char *mac_addr )
 {
   char *tmpMac    = (char *) malloc( strlen( mac ) * sizeof( char ));
   char *delimiter = (char *) ":";
