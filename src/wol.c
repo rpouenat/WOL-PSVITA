@@ -1,14 +1,3 @@
-/*
-*
-* @author     Timo Furrer
-* @co-author  Mogria
-*
-* @version    0.01.07
-* @copyright  GNU General Public License
-*
-* @reopsitory https://github.com/timofurrer/WOL
-*
-*/
 #include "wol.h"
 
 #include <netinet/in.h>

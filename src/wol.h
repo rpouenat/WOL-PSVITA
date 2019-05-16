@@ -12,8 +12,6 @@
 
 #define REMOTE_IP		   "192.168.1.X"
 
-#define REMOTE_ADDR_MAX	   0xFFFFFFFF
-
 #define REMOTE_PORT        9
 
 #define ARGS_BUF_MAX       128
