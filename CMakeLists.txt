@@ -8,10 +8,10 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   endif()
 endif()
 
-project(WOL)
+project(WOLF)
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
-set(VITA_APP_NAME "WOL")
+set(VITA_APP_NAME "Wake On Lan")
 set(VITA_TITLEID  "VSDK00014")
 set(VITA_VERSION  "01.00")
 

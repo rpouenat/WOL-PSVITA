@@ -6,22 +6,14 @@
 #define CONVERT_BASE       16
 
 #define ADDR_LEN           16
-#define REMOTE_ADDR        "255.255.255.255"
 
-#define MAC_ADDR_SET	   "14:DD:A9:27:95:B9"
-
-#define REMOTE_IP		   "192.168.1.46"
+void read_config(char *file_name);
 
 
-#define ARGS_BUF_MAX       128
+void wol_pc(char *ip_addr, char *mac_addr_str) ;
 
 
-
-
-void wol_pc();
-
-
-int send_WOL( char *mac_addr);
+int send_WOL( char *ip_addr, char *mac_addr);
 
 
 void convert( const char *mac, char *mac_addr );

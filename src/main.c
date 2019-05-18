@@ -33,21 +33,6 @@ int main(int argc, char *argv[]) {
 
 	SceCtrlData pad; 	//initialisation de la variable des touches de controle
 	psvDebugScreenInit(); //initialisation de la variable de l'écran
-	int ret; // variable de retour contenant 
-
-
-
-	// création du répertoire
-	//sceIoMkdir("ux0:/data/vpn", 0777);
-
-
-	open_file("ux0:/data/vpn/config.ovpn");
-
-	//sceNetShowIfconfig((void*) p,0);
-
-
-	// /* Save the IP of PSVita to a global variable */
-	// sceNetInetPton(SCE_NET_AF_INET, info.ip_address, &vita_ip);
 
 
 	char* url[] = {"icanhazip.com","/"};
@@ -56,7 +41,8 @@ int main(int argc, char *argv[]) {
 
 	getIpPublic(url);
 
-	wol_pc();
+	// On lit le fichier de onfiguration pour lancer le WOL
+	read_config("ux0:/data/wol/config.txt");
 
 
 
