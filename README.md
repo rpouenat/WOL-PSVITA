@@ -1,30 +1,16 @@
 # WOL-PSVITA PC
 
-Compile application with :
+Create directory `wol` in ``ux0:/data/`.
+
+Create a file `config.txt` in `ux0:/data/wol/` and put your machine in it.
+
+Example :
+
+config.txt :
 
 ```
-./compilation.sh
-```
-
-
-MAC Adress target:
-
-Set your MAC Adress in `src/wol.h`
-
-```
-#define MAC_ADDR_SET	   "XX:XX:XX:XX:XX:XX"
-```
-
-IP Adresse target: 
-
-Set your IP Adress in `src/wol.h`
-
-```
-#define REMOTE_IP		   "192.168.1.X"
-```
-
-PS VITA IP : 
-
-```
-curl -T *.vpk ftp://192.168.1.X:1337/ux0:/
+192.168.X.X
+AA:BB:CC:DD:EE:FF
+192.168.X.X
+FF:EE:DD:CC:BB:AA
 ```
