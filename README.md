@@ -4,9 +4,7 @@ Create directory `wol` in `ux0:/data/`.
 
 Create a file `config.txt` in `ux0:/data/wol/` and put your machine in it.
 
-Example :
-
-config.txt :
+**Example :**
 
 ```
 192.168.X.X
