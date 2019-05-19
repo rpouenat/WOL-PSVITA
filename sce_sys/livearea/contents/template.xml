@@ -9,10 +9,10 @@
 		<startup-image>startup.png</startup-image>
 	</gate>
 	
-	<frame id="frame2">
+	<frame id="frame1">
 		<liveitem>
 			<text valign="bottom" align="left" text-align="left" text-valign="bottom" line-space="3" ellipsis="on">
-				<str color="#ffffff" size="45" bold="on" shadow="on">Wake On Lan</str>
+				<str color="#ffffff" size="45" bold="on" shadow="on">WOLf</str>
 			</text>
 		</liveitem>
 	</frame>
